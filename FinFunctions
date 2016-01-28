@@ -25,5 +25,3 @@ upcont.get("notes", function(notes) {
     upcont.set('notes',text); 
    });
 };
-
-test
