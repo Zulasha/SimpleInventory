@@ -38,3 +38,27 @@ function findhand(name){
     };    
    return find   
 };
+
+function addItem(character,item){
+    var uphan = findObjs({                              
+          _type: "character",
+          _name: character,
+          });
+    upid = uphan[0].id
+    dude = getObj("character",upid)
+    var check = getAttrByName(upid, "Inventory")
+    if (check === undefined) {
+        createObj("attribute", {
+        name: "Inventory",
+        current: item,
+        characterid: upid
+    });
+    }
+    else{
+       var udat = findObjs({ type: 'attribute', characterid: uphan[0].id, name: 'Inventory' })[0];
+       var udatc = udat.get('current')
+       log(udatc)
+       udat.set('current',udatc+" "+item)
+    }
+};
+
