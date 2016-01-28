@@ -10,6 +10,7 @@ function isEmpty(object) {
 function createHand(nam,txt){
     var han = createObj("handout",{
     name: nam,
+    archived: false,
     })
     han.set('notes',txt)
 };
@@ -24,4 +25,16 @@ function UpdateHand(name,text){
 upcont.get("notes", function(notes) {
     upcont.set('notes',text); 
    });
+};
+
+function findhand(name){
+    var find = findObjs({                              
+          _type: "handout",
+          _name: name,
+          });
+    if (isEmpty(find)=== true){
+    log("No Handout Found, Creating Handout")
+    createHand(name,"");
+    };    
+   return find   
 };
