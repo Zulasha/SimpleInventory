@@ -1,0 +1,27 @@
+function isEmpty(object) {
+  for(var key in object) {
+    if(object.hasOwnProperty(key)){
+      return false;
+    }
+  }
+  return true;
+}
+
+function createHand(nam,txt){
+    var han = createObj("handout",{
+    name: nam,
+    })
+    han.set('notes',txt)
+};
+
+function UpdateHand(name,text){
+    var uphan = findObjs({                              
+          _type: "handout",
+          _name: name,
+          });
+    upid = uphan[0].id
+    var upcont = getObj("handout", upid);
+upcont.get("notes", function(notes) {
+    upcont.set('notes',text); 
+   });
+};
