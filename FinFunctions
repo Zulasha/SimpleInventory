@@ -1,3 +1,4 @@
+
 function isEmpty(object) {
   for(var key in object) {
     if(object.hasOwnProperty(key)){
@@ -45,7 +46,6 @@ function addItem(character,item){
           _name: character,
           });
     upid = uphan[0].id
-    dude = getObj("character",upid)
     var check = getAttrByName(upid, "Inventory")
     if (check === undefined) {
         createObj("attribute", {
@@ -58,7 +58,24 @@ function addItem(character,item){
        var udat = findObjs({ type: 'attribute', characterid: uphan[0].id, name: 'Inventory' })[0];
        var udatc = udat.get('current')
        log(udatc)
-       udat.set('current',udatc+" "+item)
+       udat.set('current',udatc+","+item)
     }
 };
 
+function removeItem(char,item){
+    var uphan = findObjs({                              
+          _type: "character",
+          _name: char,
+    });
+    upid = uphan[0].id
+    var check = getAttrByName(upid, "Inventory") 
+    tran = check.split(",")
+    var index = tran.indexOf(item);
+    if(index !== -1){
+    tran.splice(index,1);
+    check = tran.toString()
+    };
+    log(check)
+    var udat = findObjs({ type: 'attribute', characterid: uphan[0].id, name: 'Inventory' })[0];
+       udat.set('current',check)
+}
