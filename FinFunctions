@@ -1,81 +1,88 @@
 
 function isEmpty(object) {
-  for(var key in object) {
-    if(object.hasOwnProperty(key)){
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) {
       return false;
     }
   }
   return true;
 }
 
-function createHand(nam,txt){
-    var han = createObj("handout",{
+function createHand(nam, txt) {
+  var han = createObj("handout", {
     name: nam,
     archived: false,
-    })
-    han.set('notes',txt)
+  })
+  han.set('notes', txt)
 };
 
-function UpdateHand(name,text){
-    var uphan = findObjs({                              
-          _type: "handout",
-          _name: name,
-          });
-    upid = uphan[0].id
-    var upcont = getObj("handout", upid);
-upcont.get("notes", function(notes) {
-    upcont.set('notes',text); 
-   });
+function UpdateHand(name, text) {
+  var uphan = findObjs({
+    _type: "handout",
+    _name: name,
+  });
+  upid = uphan[0].id
+  var upcont = getObj("handout", upid);
+  upcont.get("notes", function(notes) {
+    upcont.set('notes', text);
+  });
 };
 
-function findhand(name){
-    var find = findObjs({                              
-          _type: "handout",
-          _name: name,
-          });
-    if (isEmpty(find)=== true){
+function findhand(name) {
+  var find = findObjs({
+    _type: "handout",
+    _name: name,
+  });
+  if (isEmpty(find) === true) {
     log("No Handout Found, Creating Handout")
-    createHand(name,"");
-    };    
-   return find   
+    createHand(name, "");
+  };
+  return find
 };
 
-function addItem(character,item){
-    var uphan = findObjs({                              
-          _type: "character",
-          _name: character,
-          });
-    upid = uphan[0].id
-    var check = getAttrByName(upid, "Inventory")
-    if (check === undefined) {
-        createObj("attribute", {
-        name: "Inventory",
-        current: item,
-        characterid: upid
+function addItem(character, item) {
+  var uphan = findObjs({
+    _type: "character",
+    _name: character,
+  });
+  upid = uphan[0].id
+  var check = getAttrByName(upid, "Inventory")
+  if (check === undefined) {
+    createObj("attribute", {
+      name: "Inventory",
+      current: item,
+      characterid: upid
     });
-    }
-    else{
-       var udat = findObjs({ type: 'attribute', characterid: uphan[0].id, name: 'Inventory' })[0];
-       var udatc = udat.get('current')
-       log(udatc)
-       udat.set('current',udatc+","+item)
-    }
+  } else {
+    var udat = findObjs({
+      type: 'attribute',
+      characterid: uphan[0].id,
+      name: 'Inventory'
+    })[0];
+    var udatc = udat.get('current')
+    log(udatc)
+    udat.set('current', udatc + "," + item)
+  }
 };
 
-function removeItem(char,item){
-    var uphan = findObjs({                              
-          _type: "character",
-          _name: char,
-    });
-    upid = uphan[0].id
-    var check = getAttrByName(upid, "Inventory") 
-    tran = check.split(",")
-    var index = tran.indexOf(item);
-    if(index !== -1){
-    tran.splice(index,1);
+function removeItem(char, item) {
+  var uphan = findObjs({
+    _type: "character",
+    _name: char,
+  });
+  upid = uphan[0].id
+  var check = getAttrByName(upid, "Inventory")
+  tran = check.split(",")
+  var index = tran.indexOf(item);
+  if (index !== -1) {
+    tran.splice(index, 1);
     check = tran.toString()
-    };
-    log(check)
-    var udat = findObjs({ type: 'attribute', characterid: uphan[0].id, name: 'Inventory' })[0];
-       udat.set('current',check)
+  };
+  log(check)
+  var udat = findObjs({
+    type: 'attribute',
+    characterid: uphan[0].id,
+    name: 'Inventory'
+  })[0];
+  udat.set('current', check)
 }
