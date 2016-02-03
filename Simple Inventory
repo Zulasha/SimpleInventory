@@ -1,10 +1,26 @@
 on("ready", function() {
   log("Simple Inventory Enabled")
+  var master = findHand("Simple Inventory")
+  master.set("notes",'<a href="!siupdate">Get inventory</a>')
 });
 
 on("chat:message", function(msg) {
-  if(msg.type == "api" && msg.content.indexOf("!additem") !== -1) {
-    
+  if(msg.type == "api" && msg.content.indexOf("!siupdate") !== -1) {
+    var siup = getObj("graphic",msg.selected[0]._id)
+    var stuff = siup.get("gmnotes", function(gmnotes){});
+    if(stuff.indexOf("~si~") !== -1 && stuff.indexOf(",")!== -1){
+    inventory = stuff.split("~si~")[1].split(",")
+    for (i=0;i<inventory.length;i++){
+        inventory[i] = inventory[i]+'   <a href="!removedrop '+inventory[i]+'">Drop</a>'
+    }
+    inventory = inventory.toString().replace(/,/g,"<br>")
+    var master = findHand("Simple Inventory")
+    master.set("notes",'<a href="!siupdate">Get inventory</a>'+"<br>"+inventory)
+    }
+    else {
+       var master = findHand("Simple Inventory")
+    master.set("notes",'<a href="!siupdate">Get inventory</a>'+"<br>"+"no inventory") 
+    }
   }
   else if(msg.type == "api" && msg.content.indexOf("!removedrop") !== -1) {
       var select = msg.selected
